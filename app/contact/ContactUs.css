@@ -1,0 +1,103 @@
+/* Custom Styling */
+:root {
+    --background: #f4f7fb;
+    --foreground: #333;
+    --accent-color: #28a745;
+    --card-bg: #ffffff;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #121212;
+      --foreground: #e0e0e0;
+      --accent-color: #1db954;
+      --card-bg: #333333;
+    }
+  }
+  
+  body {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    color: var(--foreground);
+    background: var(--background);
+    margin: 0;
+    padding: 0;
+  }
+  
+  h2.section-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--foreground);
+    text-transform: uppercase;
+  }
+  
+  p.section-subtitle {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .contact-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .contact-icon {
+    font-size: 3rem;
+    color: var(--accent-color);
+  }
+  
+  .btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary {
+    background-color: var(--accent-color);
+    border: none;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #218838;
+  }
+  
+  .btn-outline-success {
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    background-color: transparent;
+  }
+  
+  .btn-outline-success:hover {
+    background-color: var(--accent-color);
+    color: white;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 1s ease-out;
+  }
+  

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({
@@ -9,62 +10,71 @@ export default function Login() {
   });
 
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCredentials({
-      ...credentials,
-      [name]: value,
-    });
+    setCredentials({ ...credentials, [name]: value });
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("User Logged In:", credentials);
-    const isAuthenticated = localStorage.setItem("isAuthenticated",true);
-
-    // Navigate to upload assignment page
-    router.push("/upload-assignment");
+    login(); // Set authentication state
+    router.push("/upload-assignment"); // Navigate to upload screen
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white">
-      <h1 className="text-3xl font-bold mb-6">Login</h1>
-      <form onSubmit={handleLogin} className="space-y-4 w-80">
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={credentials.username}
-          onChange={handleChange}
-          className="w-full p-3 bg-gray-800 rounded-lg"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={credentials.password}
-          onChange={handleChange}
-          className="w-full p-3 bg-gray-800 rounded-lg"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full py-3 bg-blue-600 rounded-lg hover:bg-blue-700"
-        >
-          Login
-        </button>
-      </form>
-      <p className="mt-4">
-        Don't have an account?{" "}
-        <button
-          onClick={() => router.push("/register")}
-          className="text-blue-400 hover:underline"
-        >
-          Register here
-        </button>
-      </p>
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center"
+      style={{
+        backgroundImage: `url('/images/ass-2.jpg')`, // Reference your image
+      }}
+    >
+      <div
+        className="w-full max-w-md bg-white/90 shadow-lg rounded-lg p-8 animate-fadeIn"
+        style={{
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        <h1 className="text-4xl font-bold text-blue-600 mb-6 text-center">
+          Login to Your Account
+        </h1>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={credentials.username}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none text-black"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={credentials.password}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none text-black"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+          >
+            Login
+          </button>
+        </form>
+        <p className="text-center mt-4 text-gray-600">
+          Don't have an account?{" "}
+          <button
+            onClick={() => router.push("/register")}
+            className="text-blue-600 hover:underline"
+          >
+            Register here
+          </button>
+        </p>
+      </div>
     </div>
   );
 }
