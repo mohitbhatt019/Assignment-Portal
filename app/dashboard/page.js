@@ -2,17 +2,22 @@
 
 "use client"; // Add this directive at the top
 
+import { useAuth } from '../context/AuthContext';
 import DashboardCard from './DashboardCard';
 import { useRouter } from 'next/navigation'; // Correct import for App Router
 
 export default function Dashboard() {
   const router = useRouter(); // Declare the useRouter hook here
+  const { isAuthenticated, logout } = useAuth();
 
   const uploadAssignmentClick = () => {
-    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    debugger
     if (!isAuthenticated) {
       router.push("/login"); // Use router.push from next/navigation
     }
+    else       
+    router.push("/upload-assignment"); // Use router.push from next/navigation
+
   };
 
   return (
