@@ -14,6 +14,10 @@ export default function Layout({ children }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
         />
       </head>
+      <link rel="preload" href="/images/ass-1.jpg" as="image" />
+      <link rel="preload" href="/images/ass-2.jpg" as="image" />
+      <link rel="preload" href="/images/ass-3.jpg" as="image" />
+      <link rel="preload" href="/images/ass-4.jpg" as="image" />
       <body className="bg-gray-100 flex flex-col min-h-screen">
         <AuthProvider>
           <Navbar />
