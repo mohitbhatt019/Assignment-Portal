@@ -2,15 +2,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-
-export default function Login() {
+import { useSession, signIn, signOut } from "next-auth/react";
+export default function Login2() {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+  const { login } = useAuth();
 
   const router = useRouter();
-  const { login } = useAuth();
+  const { data: session } = useSession();
+  if (session) {
+    debugger
+    localStorage.setItem("ExternalLoginUsername", session.user.email);
+    router.push("/upload-assignment");
+    //<button onClick={() => signOut()}>Sign out</button>
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,6 +25,8 @@ export default function Login() {
   };
 
   const handleLogin = (e) => {
+
+    debugger
     e.preventDefault();
     login(); // Set authentication state
     router.push("/upload-assignment"); // Navigate to upload screen
@@ -73,6 +82,7 @@ export default function Login() {
           >
             Register here
           </button>
+          <button onClick={() => signIn()}>Login With FB and Google?</button>
         </p>
       </div>
     </div>
