@@ -2,6 +2,7 @@
 
 "use client"; // Add this directive at the top
 
+import { useSession } from 'next-auth/react';
 import { useAuth } from '../context/AuthContext';
 import DashboardCard from './DashboardCard';
 import { useRouter } from 'next/navigation'; // Correct import for App Router
@@ -9,10 +10,14 @@ import { useRouter } from 'next/navigation'; // Correct import for App Router
 export default function Dashboard() {
   const router = useRouter(); // Declare the useRouter hook here
   const { isAuthenticated, logout } = useAuth();
+  const { data: session } = useSession();
 
   const uploadAssignmentClick = () => {
     debugger
-    if (!isAuthenticated) {
+    if (session || localStorage.getItem("Authenticated")) {
+      router.push("/upload-assignment");
+    }
+    else if (!isAuthenticated) {
       router.push("/login"); // Use router.push from next/navigation
     }
     else       
@@ -31,8 +36,8 @@ export default function Dashboard() {
         <h1 className="text-4xl font-bold mb-6">Welcome to Assignment Portal</h1>
         <p className="mb-8">
           Helping students achieve excellence for over 5 years, with 10k+ successful assignments.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        </p> 
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <DashboardCard
             title="Total Assignments"
             description="Delivered successfully"

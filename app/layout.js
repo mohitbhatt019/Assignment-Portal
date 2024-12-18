@@ -1,8 +1,9 @@
-import './globals.css';
+import "./globals.css";
 import Footer from "./components/Footer";
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import SessionWrapper from "./components/SessionWrapper";
 
 export default function Layout({ children }) {
   return (
@@ -20,9 +21,12 @@ export default function Layout({ children }) {
       <link rel="preload" href="/images/ass-4.jpg" as="image" />
       <body className="bg-gray-100 flex flex-col min-h-screen">
         <AuthProvider>
-          <Navbar />
-          <main className="flex-grow">{children}</main>
+          <SessionWrapper>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+          </SessionWrapper>
         </AuthProvider>
+
         <Footer />
       </body>
     </html>

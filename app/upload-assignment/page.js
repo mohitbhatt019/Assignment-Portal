@@ -58,9 +58,9 @@ export default function UploadAssignment() {
         transition={{ duration: 0.5 }}
         className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg mt-10"
       >
-        <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+        {/* <h1 className="text-2xl font-semibold text-gray-800 mb-6">
           Upload Your Assignment
-        </h1>
+        </h1> */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -102,7 +102,7 @@ export default function UploadAssignment() {
             type="submit"
             className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
           >
-            Submit Assignment
+            Submit
           </button>
         </form>
       </motion.div>
