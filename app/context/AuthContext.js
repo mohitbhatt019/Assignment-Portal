@@ -1,25 +1,20 @@
-"use client";
-
-import { createContext, useContext, useEffect, useState } from "react";
+"use client"
+import {  createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const authStatus = localStorage.getItem("isAuthenticated");
-    setIsAuthenticated(authStatus === "true");
-  }, []);
-
   const login = () => {
-    localStorage.setItem("isAuthenticated", "true");
+    // Handle simple login (e.g., after verifying credentials)
     setIsAuthenticated(true);
+    localStorage.setItem("Authenticated", "true"); // Store authentication status
   };
 
   const logout = () => {
-    localStorage.removeItem("isAuthenticated");
     setIsAuthenticated(false);
+    localStorage.removeItem("Authenticated"); // Clear authentication status
   };
 
   return (
@@ -27,8 +22,8 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+export const useAuth = () => {
   return useContext(AuthContext);
-}
+};
