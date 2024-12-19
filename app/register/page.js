@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     email: "",
     phone: "",
     college: "",
@@ -13,6 +13,8 @@ export default function Register() {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false); // To show loading state
+  const [error, setError] = useState(null); // To handle errors
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -20,9 +22,35 @@ export default function Register() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    router.push("/login");
+    setLoading(true); // Start loading
+    setError(null); // Reset error
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // On successful registration, navigate to login page
+        router.push("/login");
+      } else {
+        // Display error message if registration fails
+        setError(result.message);
+      }
+    } catch (error) {
+      // Handle network or server errors
+      setError("Something went wrong, please try again.");
+    } finally {
+      setLoading(false); // Stop loading
+    }
   };
 
   return (
@@ -41,13 +69,14 @@ export default function Register() {
         <h1 className="text-4xl font-bold text-blue-600 mb-6 text-center">
           Create Your Account
         </h1>
+        {error && <p className="text-red-600 text-center mb-4">{error}</p>} {/* Show error message */}
         <form onSubmit={handleRegister} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
-              name="name"
+              name="username"
               placeholder="Full Name"
-              value={formData.name}
+              value={formData.username}
               onChange={handleChange}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none"
               required
@@ -110,8 +139,9 @@ export default function Register() {
           <button
             type="submit"
             className="w-full py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+            disabled={loading} // Disable button during loading
           >
-            Register Now
+            {loading ? "Registering..." : "Register Now"}
           </button>
         </form>
         <p className="text-center mt-4 text-gray-600">
