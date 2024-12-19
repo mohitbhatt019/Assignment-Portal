@@ -18,8 +18,8 @@ export default function Register() {
   const router = useRouter();
 
   const handleChange = (e) => {
-    const { username, value } = e.target;
-    setFormData({ ...formData, [username]: value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleRegister = async (e) => {

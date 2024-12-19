@@ -1,43 +1,51 @@
-// app/api/register/route.js
-import { NextResponse } from 'next/server';
-import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../../firebase'; // Adjust path to firebase.js if needed
+import bcrypt from "bcrypt";
 
 export async function POST(request) {
   try {
     const { username, password } = await request.json();
-
-    // Validate input
+debugger
     if (!username || !password) {
       return NextResponse.json(
-        { success: false, message: 'Username and password are required.' },
+        { success: false, message: "Username and password are required." },
         { status: 400 }
       );
     }
 
-    // Check if username already exists in Firestore
-    const usersRef = collection(db, 'users'); // 'users' is the collection name
-    const q = query(usersRef, where('username', '==', username));
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("username", "==", username));
     const querySnapshot = await getDocs(q);
 
-    if (!querySnapshot.empty) {
+    if (querySnapshot.empty) {
       return NextResponse.json(
-        { success: false, message: 'Username already exists.' },
-        { status: 409 } // Conflict status code
+        { success: false, message: "Invalid username or password." },
+        { status: 401 }
       );
     }
 
-    // Add the new user to Firestore
-    await addDoc(usersRef, { username, password });
+    // Extract the user data
+    let user;
+    querySnapshot.forEach((doc) => {
+      user = doc.data();
+    });
+
+    // Validate the password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        { success: false, message: "Invalid username or password." },
+        { status: 401 }
+      );
+    }
 
     return NextResponse.json(
-      { success: true, message: 'Registration successful!' },
-      { status: 201 } // Created status code
+      { success: true, message: "Login successful!" },
+      { status: 200 }
     );
   } catch (error) {
-    console.error('Error registering user:', error);
+    console.error("Login error:", error);
     return NextResponse.json(
-      { success: false, message: 'Something went wrong.' },
+      { success: false, message: "Something went wrong." },
       { status: 500 }
     );
   }
