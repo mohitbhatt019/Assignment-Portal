@@ -27,12 +27,31 @@ export default function LoginPage() {
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSimpleLogin = (e) => {
+  const handleSimpleLogin = async (e) => {
     e.preventDefault();
-    login(); // Update authentication state via AuthContext
-    localStorage.setItem("Authenticated", "true"); // Store login status in localStorage
-    router.push("/dashboard"); // Redirect to dashboard after login
+  
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      });
+  debugger
+      const result = await response.json();
+  
+      if (response.ok && result.success) {
+        localStorage.setItem("Authenticated", "true"); // Store session locally
+        router.push("/dashboard"); // Redirect user
+      } else {
+        alert(result.message || "Invalid username or password."); // Error message
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
+  
+  
 
   return (
     <div
