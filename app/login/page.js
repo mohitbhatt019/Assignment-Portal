@@ -40,6 +40,7 @@ export default function LoginPage() {
       const result = await response.json();
   
       if (response.ok && result.success) {
+        login();
         localStorage.setItem("Authenticated", "true"); // Store session locally
         router.push("/dashboard"); // Redirect user
       } else {
