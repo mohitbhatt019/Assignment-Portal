@@ -1,9 +1,11 @@
-import bcrypt from "bcrypt";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { NextResponse } from "next/server";
+import { db } from "../../../firebase"; // Update with your actual firebase config path
 
 export async function POST(request) {
   try {
     const { username, password } = await request.json();
-debugger
+
     if (!username || !password) {
       return NextResponse.json(
         { success: false, message: "Username and password are required." },
@@ -28,10 +30,8 @@ debugger
       user = doc.data();
     });
 
-    // Validate the password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
+    // Directly compare the entered password with the stored password
+    if (password !== user.password) {
       return NextResponse.json(
         { success: false, message: "Invalid username or password." },
         { status: 401 }

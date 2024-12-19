@@ -27,7 +27,7 @@ export default function Navbar() {
     await signOut({ redirect: false });
     localStorage.removeItem("Authenticated"); // Clear authentication status for simple login
     logout();
-    await router.push("/login");
+     router.push("/login");
   };
 
   const showLogoutButton = (session || isAuthenticated || externalLogin) && status !== "loading";
