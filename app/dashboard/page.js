@@ -6,23 +6,31 @@ import { useSession } from 'next-auth/react';
 import { useAuth } from '../context/AuthContext';
 import DashboardCard from './DashboardCard';
 import { useRouter } from 'next/navigation'; // Correct import for App Router
+import SkeletonLoader from '../loader/SkeletonLoader';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
   const router = useRouter(); // Declare the useRouter hook here
   const { isAuthenticated, logout } = useAuth();
   const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+
+  useEffect(() => {
+    // Simulate loading for a few seconds (replace this with actual data fetching logic)
+    setTimeout(() => {
+      setIsLoading(false); // Set loading to false once the page is ready
+    }, 2000); // 2 seconds for demo (adjust as needed)
+  }, []);
 
   const uploadAssignmentClick = () => {
-    debugger
+    debugger;
     if (session || localStorage.getItem("Authenticated")) {
       router.push("/upload-assignment");
-    }
-    else if (!isAuthenticated) {
+    } else if (!isAuthenticated) {
       router.push("/login"); // Use router.push from next/navigation
+    } else {
+      router.push("/upload-assignment"); // Use router.push from next/navigation
     }
-    else       
-    router.push("/upload-assignment"); // Use router.push from next/navigation
-
   };
 
   return (
@@ -36,23 +44,35 @@ export default function Dashboard() {
         <h1 className="text-4xl font-bold mb-6">Welcome to Assignment Portal</h1>
         <p className="mb-8">
           Helping students achieve excellence for over 5 years, with 10k+ successful assignments.
-        </p> 
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <DashboardCard
-            title="Total Assignments"
-            description="Delivered successfully"
-            stats="10,000+"
-          />
-          <DashboardCard
-            title="Active Users"
-            description="Students currently enrolled"
-            stats="5,000+"
-          />
-          <DashboardCard
-            title="Feedback Rating"
-            description="Overall user rating"
-            stats="4.8/5"
-          />
+        </p>
+
+        {/* Conditional rendering of skeleton loader or dashboard content */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {isLoading ? (
+            <>
+              <SkeletonLoader />
+              <SkeletonLoader />
+              <SkeletonLoader />
+            </>
+          ) : (
+            <>
+              <DashboardCard
+                title="Total Assignments"
+                description="Delivered successfully"
+                stats="10,000+"
+              />
+              <DashboardCard
+                title="Active Users"
+                description="Students currently enrolled"
+                stats="5,000+"
+              />
+              <DashboardCard
+                title="Feedback Rating"
+                description="Overall user rating"
+                stats="4.8/5"
+              />
+            </>
+          )}
         </div>
         <div className="flex justify-center">
           <button
