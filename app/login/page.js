@@ -27,6 +27,11 @@ export default function LoginPage() {
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
 
+const externalLogin =async (data) => {
+  await signIn(data);
+  localStorage.setItem("Authenticated", "true");
+}
+
   const handleSimpleLogin = async (e) => {
     e.preventDefault();
   
@@ -124,7 +129,7 @@ export default function LoginPage() {
 
             <div className="flex flex-col items-center">
               <button
-                onClick={() => signIn("google")}
+                onClick={() => externalLogin("google")}
                 className="w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 focus:outline-none transition duration-300"
                 aria-label="Login with Google"
               >
