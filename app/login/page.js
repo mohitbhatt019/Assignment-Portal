@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     // If user is already logged in (either through simple login or external login), redirect to dashboard
-    if (session || localStorage.getItem("Authenticated")) {
+    if (localStorage.getItem("Authenticated")) {
       router.push("/dashboard");
     }
   }, [session, router]);
