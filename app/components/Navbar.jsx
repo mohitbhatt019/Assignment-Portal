@@ -8,40 +8,57 @@ import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const { isAuthenticated, logout } = useAuth();
-  const { data: session, status } = useSession();
   const router = useRouter();
-  const [externalLogin, setExternalLogin] = useState(false);
 
-
-  const handleLogout = async () => {
-    if (externalLogin) {
-      localStorage.removeItem("ExternalLoginUsername");
-    }
-
+  const handleLogout = async (e) => {
+    e.preventDefault(); // Prevent default link behavior
     await signOut({ redirect: false });
-    localStorage.removeItem("Authenticated"); // Clear authentication status for simple login
-    logout();
-     router.push("/login");
+    router.push("/login");
+    await logout();
   };
 
+  const handleLogin = (e) => {
+    e.preventDefault(); // Prevent default link behavior
+    router.push("/login");
+  };
 
   return (
-    <nav className="bg-gray-800 text-white p-4 flex justify-between">
-      <div className="font-bold text-lg">Assignment Portal</div>
-      <div className="space-x-4">
-        <Link href="/dashboard">Dashboard</Link>
-        <Link href="/contact">Contact</Link>
+    <nav className="bg-gray-900 text-white py-4 px-6 shadow-md flex justify-between items-center">
+      {/* Logo/Title */}
+      <div className="font-bold text-2xl text-white">Assignment Portal</div>
+
+      {/* Navbar Links */}
+      <div className="flex space-x-8 items-center">
+        <Link
+          href="/dashboard"
+          className="hover:text-blue-400 transition-colors duration-300 text-lg font-medium"
+        >
+          Dashboard
+        </Link>
+        <Link
+          href="/contact"
+          className="hover:text-blue-400 transition-colors duration-300 text-lg font-medium"
+        >
+          Contact
+        </Link>
+
+        {/* Auth Button (Login/Logout) */}
         {isAuthenticated ? (
-          <button
+          <Link
+            href="/login"
             onClick={handleLogout}
-            className="bg-red-600 py-2 px-4 rounded hover:bg-red-700 text-white"
+            className="bg-red-600 py-2 px-6 rounded-lg text-white font-semibold hover:bg-red-700 transition duration-300"
           >
             Logout
-          </button>
+          </Link>
         ) : (
-            <Link href="/login" className="bg-blue-600 py-2 px-4 rounded hover:bg-blue-700 text-white">
-              Login
-            </Link>
+          <Link
+            href="/login"
+            onClick={handleLogin}
+            className="bg-blue-600 py-2 px-6 rounded-lg text-white font-semibold hover:bg-blue-700 transition duration-300"
+          >
+            Login
+          </Link>
         )}
       </div>
     </nav>

@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     // If user is already logged in (either through simple login or external login), redirect to dashboard
-    if (localStorage.getItem("Authenticated")) {
+    if (localStorage.getItem("isAuthenticated")) {
       router.push("/dashboard");
     }
   }, [session, router]);
@@ -31,7 +31,7 @@ export default function LoginPage() {
 
 const externalLogin =async (data) => {
   await signIn(data);
-  localStorage.setItem("Authenticated", "true");
+  localStorage.setItem("isAuthenticated", "true");
 }
 
   const handleSimpleLogin = async (e) => {
@@ -50,7 +50,7 @@ const externalLogin =async (data) => {
 
       if (response.ok && result.success) {
         login();
-        localStorage.setItem("Authenticated", "true"); // Store session locally
+        localStorage.setItem("isAuthenticated", "true"); // Store session locally
         router.push("/dashboard"); // Redirect user
       } else {
         alert(result.message || "Invalid username or password."); // Error message

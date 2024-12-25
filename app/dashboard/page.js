@@ -24,7 +24,7 @@ export default function Dashboard() {
 
   const uploadAssignmentClick = () => {
     debugger;
-    if (session || localStorage.getItem("Authenticated")) {
+    if (session || localStorage.getItem("isAuthenticated")) {
       router.push("/upload-assignment");
     } else if (!isAuthenticated) {
       router.push("/login"); // Use router.push from next/navigation
