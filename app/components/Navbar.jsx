@@ -1,26 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
-import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
+import { signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
-  const { isAuthenticated, logout } = useAuth();
+  const { logout } = useAuth();
   const router = useRouter();
+  const [isHydrated, setIsHydrated] = useState(false); // Ensures the component renders only on the client
+  const isAuthenticated =
+    typeof window !== "undefined" && localStorage.getItem("isAuthenticated") === "true";
+
+  useEffect(() => {
+    setIsHydrated(true); // Marks the component as ready after hydration
+  }, []);
 
   const handleLogout = async (e) => {
-    e.preventDefault(); // Prevent default link behavior
+    e.preventDefault();
     await signOut({ redirect: false });
+    localStorage.setItem("isAuthenticated", "false"); // Clear auth status
     router.push("/login");
     await logout();
   };
 
   const handleLogin = (e) => {
-    e.preventDefault(); // Prevent default link behavior
+    e.preventDefault();
     router.push("/login");
   };
+
+  if (!isHydrated) return null; // Prevent rendering until hydration is complete
 
   return (
     <nav className="bg-gray-900 text-white py-4 px-6 shadow-md flex justify-between items-center">
@@ -43,22 +53,20 @@ export default function Navbar() {
         </Link>
 
         {/* Auth Button (Login/Logout) */}
-        {localStorage.getItem("isAuthenticated")=="true" ? (
-          <Link
-            href="/login"
+        {isAuthenticated ? (
+          <button
             onClick={handleLogout}
             className="bg-red-600 py-2 px-6 rounded-lg text-white font-semibold hover:bg-red-700 transition duration-300"
           >
             Logout
-          </Link>
+          </button>
         ) : (
-          <Link
-            href="/login"
+          <button
             onClick={handleLogin}
             className="bg-blue-600 py-2 px-6 rounded-lg text-white font-semibold hover:bg-blue-700 transition duration-300"
           >
             Login
-          </Link>
+          </button>
         )}
       </div>
     </nav>
