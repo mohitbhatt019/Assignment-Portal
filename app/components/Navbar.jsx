@@ -43,7 +43,7 @@ export default function Navbar() {
         </Link>
 
         {/* Auth Button (Login/Logout) */}
-        {isAuthenticated ? (
+        {localStorage.getItem("isAuthenticated")=="true" ? (
           <Link
             href="/login"
             onClick={handleLogout}
