@@ -11,7 +11,8 @@ export default function Navbar() {
   const router = useRouter();
   const [isHydrated, setIsHydrated] = useState(false); // Ensures the component renders only on the client
   const isAuthenticated =
-    typeof window !== "undefined" && localStorage.getItem("isAuthenticated") === "true";
+    typeof window !== "undefined" &&
+    localStorage.getItem("isAuthenticated") === "true";
 
   useEffect(() => {
     setIsHydrated(true); // Marks the component as ready after hydration
@@ -30,7 +31,17 @@ export default function Navbar() {
     router.push("/login");
   };
 
-  if (!isHydrated) return null; // Prevent rendering until hydration is complete
+  if (!isHydrated)
+    return (
+      <nav className="bg-gray-900 text-white py-4 px-6 shadow-md flex justify-between items-center animate-pulse">
+        <div className="bg-gray-700 h-8 w-36 rounded"></div>
+        <div className="flex space-x-8 items-center">
+          <div className="bg-gray-700 h-6 w-24 rounded"></div>
+          <div className="bg-gray-700 h-6 w-24 rounded"></div>
+          <div className="bg-gray-700 h-8 w-20 rounded"></div>
+        </div>
+      </nav>
+    ); // Prevent rendering until hydration is complete
 
   return (
     <nav className="bg-gray-900 text-white py-4 px-6 shadow-md flex justify-between items-center">
@@ -41,14 +52,12 @@ export default function Navbar() {
       <div className="flex space-x-8 items-center">
         <Link
           href="/dashboard"
-          className="hover:text-blue-400 transition-colors duration-300 text-lg font-medium"
-        >
+          className="hover:text-blue-400 transition-colors duration-300 text-lg font-medium">
           Dashboard
         </Link>
         <Link
           href="/contact"
-          className="hover:text-blue-400 transition-colors duration-300 text-lg font-medium"
-        >
+          className="hover:text-blue-400 transition-colors duration-300 text-lg font-medium">
           Contact
         </Link>
 
@@ -56,15 +65,13 @@ export default function Navbar() {
         {isAuthenticated ? (
           <button
             onClick={handleLogout}
-            className="bg-red-600 py-2 px-6 rounded-lg text-white font-semibold hover:bg-red-700 transition duration-300"
-          >
+            className="bg-red-600 py-2 px-6 rounded-lg text-white font-semibold hover:bg-red-700 transition duration-300">
             Logout
           </button>
         ) : (
           <button
             onClick={handleLogin}
-            className="bg-blue-600 py-2 px-6 rounded-lg text-white font-semibold hover:bg-blue-700 transition duration-300"
-          >
+            className="bg-blue-600 py-2 px-6 rounded-lg text-white font-semibold hover:bg-blue-700 transition duration-300">
             Login
           </button>
         )}
